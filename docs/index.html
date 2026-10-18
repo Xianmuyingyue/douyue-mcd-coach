@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>窦月·麦门健康执行器 · 离线演示</title>
+<style>
+  :root{
+    --mcd-red:#DA291C; --mcd-yellow:#FFC72C; --ink:#1f2328; --mut:#6b7280;
+    --line:#e6e8eb; --bg:#fafafa; --card:#ffffff; --warn:#b45309; --warnbg:#fff7ed;
+    --ok:#15803d; --okbg:#f0fdf4;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    line-height:1.6;font-size:15px}
+  .wrap{max-width:880px;margin:0 auto;padding:28px 20px 48px}
+  header h1{font-size:25px;margin:0 0 6px;font-weight:700;letter-spacing:.3px}
+  header .sub{color:var(--mut);margin:0 0 12px}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+  .pill{display:inline-block;background:#FFF3D6;color:#8a5a00;border-radius:999px;
+    padding:4px 12px;font-size:12px;font-weight:500}
+  .pill.red{background:#FDE8E6;color:var(--mcd-red)}
+  .pill.green{background:var(--okbg);color:var(--ok)}
+  .daily-goal{background:#DA291C;color:#fff;border-radius:16px;padding:16px 18px;margin:16px 0;text-align:center}
+  .daily-goal .t{font-size:12px;letter-spacing:3px;opacity:.9}
+  .daily-goal .big{font-size:30px;font-weight:800;letter-spacing:1px;margin:5px 0 3px}
+  .daily-goal .s{font-size:12px;opacity:.95;line-height:1.7}
+  .today-bar{background:#EEF7E8;border:1px solid #C0DD97;color:#27500A;border-radius:12px;padding:10px 14px;margin:12px 0;font-size:13px;text-align:center}
+  .today-bar b{color:#3B6D11;font-size:16px}
+  .intro{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:16px 18px;margin:18px 0;color:#374151;font-size:14px}
+  .tabs{display:flex;gap:8px;margin:18px 0 14px}
+  .tab{flex:1;text-align:center;padding:12px;border:1px solid var(--line);
+    border-radius:12px;background:#fff;cursor:pointer;font-weight:500;color:var(--mut)}
+  .tab.active{background:var(--mcd-red);color:#fff;border-color:var(--mcd-red)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:20px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .seg button{border:0;background:#fff;padding:8px 16px;cursor:pointer;font-size:14px;color:var(--mut)}
+  .seg button.on{background:var(--mcd-yellow);color:#3a2c00;font-weight:600}
+  .sets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .set{flex:1;min-width:140px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;cursor:pointer;text-align:left}
+  .set.on{border-color:var(--mcd-red);background:#FFF3D6}
+  .set b{display:block;font-size:14px;color:var(--ink)}
+  .set small{display:block;font-size:11px;color:var(--mut);margin-top:2px}
+  .set.on b{color:var(--mcd-red)}
+  .btn{background:var(--mcd-red);color:#fff;border:0;border-radius:999px;
+    padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer}
+  .btn:hover{filter:brightness(1.05)}
+  input[type=number]{width:120px;padding:9px 12px;border:1px solid var(--line);
+    border-radius:10px;font-size:14px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;
+    padding:6px 14px;cursor:pointer;font-size:13px;color:#374151}
+  .chip:hover{border-color:var(--mcd-red);color:var(--mcd-red)}
+  .out{margin-top:16px}
+  .plan{display:flex;flex-direction:column;gap:8px}
+  .item{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line);padding:8px 0}
+  .item .nm{font-weight:500}
+  .item .mt{color:var(--mut);font-size:13px}
+  .metrics{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .metric{flex:1;min-width:120px;background:#f8fafc;border:1px solid var(--line);
+    border-radius:12px;padding:12px;text-align:center}
+  .metric .v{font-size:20px;font-weight:700}
+  .metric .l{font-size:12px;color:var(--mut)}
+  .unit-hero{background:linear-gradient(120deg,#FFF3D6,#FFE9B0);border-radius:14px;
+    padding:16px;text-align:center;margin:14px 0}
+  .unit-hero .big{font-size:30px;font-weight:800;color:#8a5a00}
+  .warn{border-left:4px solid var(--warn);background:var(--warnbg);color:#7c4a06;
+    padding:12px 14px;border-radius:8px;margin:12px 0;font-size:14px}
+  .ok{border-left:4px solid var(--ok);background:var(--okbg);color:#14532d;
+    padding:12px 14px;border-radius:8px;margin:12px 0;font-size:14px}
+  .tiers{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .tier{flex:1;min-width:150px;border:1px solid var(--line);border-radius:12px;
+    padding:12px;background:#fff}
+  .tier .h{font-weight:700;color:var(--mcd-red)}
+  .tier .d{font-size:13px;color:#374151}
+  .hidden{display:none}
+  footer{color:var(--mut);font-size:12px;margin-top:24px;border-top:1px solid var(--line);
+    padding-top:16px}
+  .note{font-size:12px;color:var(--mut);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>窦月 · 麦门健康执行器</h1>
+    <p class="sub">把全网爆火的「窦月减肥法 / 麦当劳减肥法」变成可执行的麦当劳点餐方案，用真实菜单算热量，用「1 板烧」单位守护健康底线。</p>
+    <div class="tags">
+      <span class="pill red">窦月减肥法</span>
+      <span class="pill">1 板烧计量单位</span>
+      <span class="pill green">健康护栏</span>
+      <span class="pill">离线演示 · 免 Token</span>
+    </div>
+  </header>
+
+  <div class="daily-goal">
+    <div class="t">每 日 热 量 目 标 · 大 字 提 醒</div>
+    <div class="big">每天 ≈ 3 个板烧</div>
+    <div class="s">全天约 1300 kcal（≈3.3 板烧）· 合理缺口 300–500 · 每周稳降 0.5–1kg</div>
+    <div class="s">＝ 2 个去酱板烧 + 2 个白馒头 + 2 个水煮蛋（按 1 板烧 ≈ 400 kcal 折算）</div>
+  </div>
+
+  <div class="today-bar" id="todayBar">今日已记 0.00 板烧 · 目标 3 板烧</div>
+
+  <div class="intro">
+    本页为<strong>纯离线演示</strong>，内置示例数据（热量已对齐官方实测值）；<strong>此页的"下单"仅为界面示意，不会产生真实订单</strong>。真实下单由 Skill 在 WorkBuddy 中调用官方 MCP 完成（会进入你账号的「待支付」）。
+    所有输出<strong>仅供参考，不构成医疗或营养建议</strong>。
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" id="t1" onclick="switchTab(1)">① 麦当劳场景 · 选餐 + 下单</div>
+    <div class="tab" id="t2" onclick="switchTab(2)">② 非麦场景 · 1 板烧换算</div>
+  </div>
+
+  <!-- 场景一：麦当劳（3 款低卡套餐 + 1 个避坑对比） -->
+  <div id="p1">
+    <div class="card">
+      <div class="row"><span>选一个低卡套餐：</span></div>
+      <div class="sets" id="setOpts">
+        <button class="set on" onclick="pickSet('bansha',this)"><b>板烧经典餐</b><small>2×去酱板烧 · 732 kcal · 46g</small></button>
+        <button class="set" onclick="pickSet('cheese',this)"><b>双层吉士餐</b><small>双层吉士+苹果片 · 461 kcal · 27g</small></button>
+        <button class="set" onclick="pickSet('fish',this)"><b>麦香鱼轻食</b><small>麦香鱼+苹果片 · 357 kcal · 16g</small></button>
+        <button class="set" onclick="pickSet('bun',this)"><b>晚餐·2白馒头</b><small>非麦 · 446 kcal · 避坑示例</small></button>
+      </div>
+      <div class="note" style="margin-bottom:10px">热量为官方实测值；价格为示例估算，真实以门店 calculate-price 为准。</div>
+      <div class="out" id="mcdOut"></div>
+
+      <div id="execBox" class="hidden" style="margin-top:16px;border-top:1px dashed var(--line);padding-top:14px">
+        <div class="row">
+          <span>一键执行 <b id="execMealName" style="color:var(--mcd-red)"></b>：</span>
+          <button class="btn" onclick="doCoupon()">① 领券</button>
+          <button class="btn" onclick="doPrice()">② 核价</button>
+          <button class="btn" onclick="doOrder()">③ 下单（需确认）</button>
+        </div>
+        <div class="out" id="execOut"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 场景二：非麦 -->
+  <div id="p2" class="hidden">
+    <div class="card">
+      <div class="row">
+        <span>这餐大约多少 kcal？<span style="color:#9ca3af;font-size:12px">（点下面的选项即出结果）</span></span>
+        <input type="number" id="kcalIn" placeholder="输入或点选" min="0" oninput="genBansha()">
+      </div>
+      <div class="chips">
+        <span class="chip" onclick="setKcal(250)">鸡胸沙拉 250</span>
+        <span class="chip" onclick="setKcal(523)">黄焖鸡(去皮) 523</span>
+        <span class="chip" onclick="setKcal(600)">食堂两荤一素 600</span>
+        <span class="chip" onclick="setKcal(900)">一顿火锅 900</span>
+      </div>
+      <div class="out" id="banshaOut"></div>
+      <div id="recordMsg" style="margin-top:6px;font-size:13px;text-align:center"></div>
+    </div>
+  </div>
+
+  <footer>
+    窦月·麦门健康执行器 · 麦当劳程序员节创意开发大赛参赛作品（非官方产品）。<br>
+    蒋诗萌原话为「板烧鸡腿堡」；民间亦称「照烧汉堡」。本作将其简化为计量单位「1 板烧」。<br>
+    热量数据为公开估算示例，真实值以麦当劳官方渠道为准；减脂请个性化，特殊人群请咨询医生或营养师。
+  </footer>
+</div>
+
+<script>
+  // —— 演示数据（以官方 MCP 实时值为准）——
+  const FOODS = {
+    egg:    {name:"水煮蛋",          kcal:70,  protein:6,  price:0},
+    grilled:{name:"去酱板烧鸡腿堡",   kcal:366, protein:23, price:24},
+    dcheese:{name:"双层吉士汉堡",     kcal:429, protein:27, price:23},
+    fish:   {name:"麦香鱼",          kcal:325, protein:16, price:18},
+    apple:  {name:"苹果片",          kcal:32,  protein:0,  price:9},
+    bun:    {name:"白馒头(100g)",     kcal:223, protein:7,  price:3}
+  };
+  const UNIT = 400; // 1 板烧 ≈ 板烧鸡腿堡(去酱) ≈ 400 kcal（实测带酱 391，去酱减约 25）
+  const SETS = {
+    bansha: {title:"午餐 · 板烧经典餐（窦月同款）", short:"板烧经典餐", items:[["grilled",2]], warn:false,
+             note:"已加「去酱」特制项；可加苹果片/玉米杯补纤维。"},
+    cheese: {title:"午餐 · 双层吉士餐", short:"双层吉士餐", items:[["dcheese",1],["apple",1]], warn:false,
+             note:"双层吉士配苹果片，换个口味；可选去酱。"},
+    fish:   {title:"午餐 · 麦香鱼轻食", short:"麦香鱼轻食", items:[["fish",1],["apple",1]], warn:false,
+             note:"更轻一档；蛋白略低，可加 1 个水煮蛋。"},
+    bun:    {title:"晚餐 · 2 个白馒头（非麦 · 避坑示例）", short:"2 白馒头", items:[["bun",2]], warn:true, note:""}
+  };
+  function switchTab(n){
+    document.getElementById("t1").classList.toggle("active", n===1);
+    document.getElementById("t2").classList.toggle("active", n===2);
+    document.getElementById("p1").classList.toggle("hidden", n!==1);
+    document.getElementById("p2").classList.toggle("hidden", n!==2);
+  }
+  function setKcal(v){ document.getElementById("kcalIn").value = v; genBansha(); }
+
+  let CUR = null;
+  function pickSet(key, el){
+    document.querySelectorAll("#setOpts .set").forEach(b=>b.classList.remove("on"));
+    if(el) el.classList.add("on");
+    const s=SETS[key];
+    let k=0,p=0,pr=0,rows="";
+    s.items.forEach(([fk,q])=>{
+      const f=FOODS[fk];
+      k+=f.kcal*q; p+=f.protein*q; pr+=f.price*q;
+      rows+=`<div class="item"><span class="nm">${f.name} ×${q}</span>
+        <span class="mt">${f.kcal*q} kcal · ${f.protein*q}g 蛋白 · ¥${f.price*q}</span></div>`;
+    });
+    CUR = {key:key, short:s.short, kcal:k, price:pr, warn:s.warn};
+    const bansha=(k/UNIT).toFixed(2);
+    const note = s.warn
+      ? `<div class="warn">健康提醒：晚餐为纯白馒头（精制高 GI 碳水，缺蛋白/纤维）。改良建议：换 1 个粗粮馒头 + 一份蔬菜/豆腐，或午餐已补足蛋白。</div>`
+      : `<div class="ok">${s.note} 全天约 3–4 个板烧即可维持 300–500 缺口。</div>`;
+    document.getElementById("mcdOut").innerHTML = `
+      <div style="font-weight:600;font-size:14px;margin-bottom:8px">${s.title}</div>
+      <div class="plan">${rows}</div>
+      <div class="metrics">
+        <div class="metric"><div class="v">${k}</div><div class="l">总 kcal</div></div>
+        <div class="metric"><div class="v">${p}g</div><div class="l">蛋白质</div></div>
+        <div class="metric"><div class="v">¥${pr}</div><div class="l">价格</div></div>
+      </div>
+      <div class="unit-hero">本餐 ≈ <span class="big">${bansha}</span> 板烧</div>
+      ${note}`;
+    const eb=document.getElementById("execBox"), eo=document.getElementById("execOut");
+    eo.innerHTML="";
+    if(s.warn){ eb.classList.add("hidden"); }
+    else {
+      eb.classList.remove("hidden");
+      document.getElementById("execMealName").textContent = "· " + s.short;
+      eo.innerHTML = `<div class="note">≈ ¥${pr}；点上方按钮：领券 → 核价 → 下单（演示示意，不产生真实订单）。</div>`;
+    }
+  }
+
+  function genBansha(){
+    const raw=parseFloat(document.getElementById("kcalIn").value);
+    const out=document.getElementById("banshaOut");
+    if(!raw || raw<=0){ out.innerHTML=""; return; }
+    const ban=(raw/UNIT).toFixed(2);
+    const tiers=[
+      [0.9,"0.9 板烧指导","≈360 kcal · 更轻一餐：鸡胸肉 + 大量蔬菜 + 半拳粗粮"],
+      [1.0,"1 板烧指导","≈400 kcal · 标准一餐：去皮鸡腿 + 两拳蔬菜 + 一拳糙米"],
+      [1.2,"1.2 板烧指导","≈480 kcal · 稍多一餐：瘦牛肉 + 蔬菜 + 一拳红薯"]
+    ].map(([m,h,d])=>`<div class="tier"><div class="h">${h}</div>
+        <div class="d">${d}</div></div>`).join("");
+    document.getElementById("banshaOut").innerHTML = `
+      <div class="unit-hero">这餐 ≈ <span class="big">${ban}</span> 板烧</div>
+      <div style="margin:10px 0"><button class="btn" onclick="recordToday(${ban},'非麦餐')">＋ 记入今日</button></div>
+      <div class="ok">用麦当劳的「板烧鸡腿堡」作刻度，即使不在麦门吃，也能感知这顿相当于几个板烧。</div>
+      <div class="tiers">${tiers}</div>`;
+  }
+
+  // —— 场景一内嵌：一键执行（领券 → 核价 → 下单，演示模拟，无真实调用）——
+  function doCoupon(){
+    document.getElementById("execOut").innerHTML +=
+      `<div class="ok">① 已自动调用领券接口 auto-bind-coupons：<b>当前暂无可领取的优惠券</b>（实测接口常返回此结果，免费、无风险）。</div>`;
+  }
+  function doPrice(){
+    const p = CUR ? CUR.price : 48;
+    const short = CUR ? CUR.short : "所选套餐";
+    const tag = (CUR && CUR.key==='bansha') ? "实测价" : "示例估算价";
+    document.getElementById("execOut").innerHTML +=
+      `<div class="ok">② 核价 calculate-price：「${short}」= <b>¥${p}</b>（${tag}，当前无优惠 ¥0）。</div>`;
+  }
+  function doOrder(){
+    const p = CUR ? CUR.price : 48;
+    const short = CUR ? CUR.short : "所选套餐";
+    document.getElementById("execOut").innerHTML +=
+      `<div class="warn" style="border-left-color:#A32D2D;background:#FCEBEB;color:#501313">`+
+      `③ 确认下单？<br>门店：麦当劳上海南京东路餐厅<br>套餐：${short}<br>实付：¥${p}`+
+      `<br>支付：下单后在「麦当劳 App → 我的订单」完成付款（无需扫码）`+
+      `<br><button class="btn" style="margin-top:8px" onclick="confirmOrder()">确认下单</button> `+
+      `<button class="btn" style="margin-top:8px;background:#fff;color:#DA291C;border:1px solid #DA291C" onclick="cancelOrder()">取消</button></div>`;
+  }
+  function confirmOrder(){
+    const p = CUR ? CUR.price : 48;
+    const ban = CUR ? (CUR.kcal/UNIT).toFixed(2) : "1.83";
+    document.getElementById("execOut").innerHTML +=
+      `<div class="ok"><b>订单已创建（待支付）</b>　订单号 #MCD-DEMO-0001（示意）｜堂食自取｜实付 ¥${p}<br>`+
+      `支付：打开麦当劳 App → 我的订单 → 待支付 → 付款（<b>已实测：订单会出现在 App 我的订单</b>，无需扫码）。<br>`+
+      `付款后生成取餐码 · 本餐 ≈ <b>${ban} 板烧</b>。</div>`;
+  }
+  function cancelOrder(){
+    document.getElementById("execOut").innerHTML +=
+      `<div class="warn" style="border-left-color:#854F0B;background:#FAEEDA;color:#633806">已取消下单，未产生任何扣款。</div>`;
+  }
+
+  // —— 每日累计（演示页用 localStorage；真实持久化见 scripts/daily_tracker.py）——
+  let __memTotal = 0;
+  function todayKey(){ const d=new Date(); return 'douyue_'+d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function getTodayTotal(){
+    try { const v=localStorage.getItem(todayKey()); if(v!==null) return parseFloat(v)||0; } catch(e){}
+    return __memTotal;
+  }
+  function updateTodayBar(){
+    const v=getTodayTotal();
+    const el=document.getElementById('todayBar');
+    if(el) el.innerHTML=`今日已记 <b>${v.toFixed(2)}</b> 板烧（约 ${Math.round(v*400)} kcal）· 目标 3 板烧 · 还差 ${Math.max(0,(3.3-v)).toFixed(2)}`;
+  }
+  function recordToday(ban, label){
+    const add=parseFloat(ban)||0;
+    __memTotal = getTodayTotal() + add;
+    try { localStorage.setItem(todayKey(), __memTotal.toFixed(2)); } catch(e){}
+    updateTodayBar();
+    const box=document.getElementById('recordMsg');
+    if(box) box.innerHTML=`<span style="color:#27500A">✓ 已记入今日：+${add.toFixed(2)} 板烧 · ${label}（今日累计 ${__memTotal.toFixed(2)} 板烧）</span>`;
+    else { try{ alert('已记入今日：+'+add.toFixed(2)+' 板烧 · '+label); }catch(e){} }
+  }
+
+  // —— 截图/直达用：URL hash 触发对应状态（正常访问无任何影响）——
+  (function(){
+    updateTodayBar();
+    const h = location.hash || "";
+    if (h.indexOf("snap=lunch") >= 0) { pickSet('bansha', document.getElementById('setOpts').firstElementChild); }
+    else if (h.indexOf("snap=bansha") >= 0) { switchTab(2); document.getElementById("kcalIn").value=523; genBansha(); }
+    else if (h.indexOf("snap=exec") >= 0) { switchTab(1); pickSet('bansha', document.getElementById('setOpts').firstElementChild); doCoupon(); doPrice(); doOrder(); }
+    else if (h.indexOf("snap=record") >= 0) { switchTab(2); document.getElementById("kcalIn").value=523; genBansha(); recordToday((523/400).toFixed(2),'非麦餐'); }
+  })();
+</script>
+</body>
+</html>

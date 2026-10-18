@@ -1,0 +1,15 @@
+# —— 绝不提交 Token / 敏感信息 ——
+.mcd_mcp_token
+*.token
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 备份（install.py 生成的 .bak）
+*.bak
