@@ -1,5 +1,7 @@
 # 窦月·麦门健康执行器 · douyue-mcd-coach
 
+[![GitHub stars](https://img.shields.io/github/stars/Xianmuyingyue/douyue-mcd-coach?style=social)](https://github.com/Xianmuyingyue/douyue-mcd-coach)　**⭐ 觉得有意思就点个 Star 支持参赛（本次比赛按 GitHub Star 排名）**　[🎮 免 Token 演示](docs/index.html)
+
 > 蒋诗萌综艺带火的「窦月减肥法 / 麦当劳减肥法」冲上热搜后，全网都在问：到底怎么吃？
 > 本项目把它做成一个**能真正执行**的麦当劳 Skill：一键生成低卡套餐、用「1 板烧」看懂热量、用官方真实菜单核价、直接下单并在**麦当劳 App 里安全付款**——同时用医生改良版守住健康底线。
 
