@@ -68,6 +68,8 @@
 
 ## 🚀 安装与配置
 
+> 📖 更完整的「装 + 一句话订餐」说明见 **[docs/INSTALL.md](docs/INSTALL.md)**。
+
 ### 1. 申请麦当劳 MCP Token
 前往 [open.mcd.cn/mcp](https://open.mcd.cn/mcp) 登录并申请 Token，放入环境变量（**切勿写入文件或公开**）：
 
@@ -117,6 +119,7 @@ douyue-mcd-coach/
 ├── install.py                 一键安装脚本
 ├── docs/
 │   ├── index.html             免 Token 离线演示页（单文件，零依赖）
+│   ├── INSTALL.md             安装与调用指南（WorkBuddy 用户订餐流程）
 │   ├── automation.md          可选自动化（每日中午/晚上提醒，默认关闭）
 │   └── images/                演示截图（README 引用）
 ├── references/
