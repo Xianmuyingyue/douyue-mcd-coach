@@ -68,38 +68,79 @@
 
 ## 🚀 安装与配置
 
-> 📖 更完整的「装 + 一句话订餐」说明见 **[docs/INSTALL.md](docs/INSTALL.md)**。
-
 ### 1. 申请麦当劳 MCP Token
-前往 [open.mcd.cn/mcp](https://open.mcd.cn/mcp) 登录并申请 Token，放入环境变量（**切勿写入文件或公开**）：
+1. 打开 [open.mcd.cn/mcp](https://open.mcd.cn/mcp)，用手机号登录；
+2. 点右上角【控制台】→【激活】→ 申请 MCP Token；
+3. 复制 Token（**只存本地，切勿写入文件或公开**）。
 
-```bash
-export MCD_MCP_TOKEN="你的 Token"   # PowerShell: $env:MCD_MCP_TOKEN="你的 Token"
+### 2. 在 WorkBuddy 里配置 MCP 连接器
+1. 左侧边栏【专家·技能·连接器】→ 选中【连接器】页签；
+2. 右上角【自定义连接器】→【配置 MCP】；
+3. 粘贴下面 JSON，把 `YOUR_MCP_TOKEN` 换成你的 Token：
+
+```json
+{
+  "mcpServers": {
+    "mcd-mcp": {
+      "type": "streamablehttp",
+      "url": "https://mcp.mcd.cn",
+      "headers": {
+        "Authorization": "Bearer YOUR_MCP_TOKEN"
+      }
+    }
+  }
+}
 ```
 
-### 2. 接入 MCP（以 WorkBuddy 为例）
-左侧【专家·技能·连接器】→【连接器】→【自定义连接器】→【配置 MCP】，填入 `mcp-config.example.json` 内容并把 `${MCD_MCP_TOKEN}` 换成你的 Token，启用即可。
+4. 点【保存】→ 回到【自定义连接器】，把 `mcd-mcp`【启用】。
 
-### 3. 安装 Skill
-```bash
-python install.py --target workbuddy   # 复制到 ~/.workbuddy/skills/douyue-mcd-coach
+### 3. 安装本 Skill（三选一）
+- **A · 从 SkillHub 安装**：WorkBuddy 左侧【技能】→ 搜索「窦月·麦门健康执行器」→ 安装 / 启用。
+- **B · 本地安装（推荐）**：
+  ```bash
+  git clone https://github.com/Xianmuyingyue/douyue-mcd-coach
+  cd douyue-mcd-coach
+  python install.py --target workbuddy   # 复制到 ~/.workbuddy/skills/douyue-mcd-coach
+  ```
+- **C · 手动放置**：把整个 `douyue-mcd-coach` 文件夹拷到 `~/.workbuddy/skills/` 下。
+
+## 💬 怎么调用（直接用自然语言）
+
+| 你想做什么 | 直接说 |
+|---|---|
+| 安排一餐 | 「我想吃麦当劳，帮我安排一顿低卡午餐」 |
+| 换算板烧 | 「食堂黄焖鸡 523 大卡，算几个板烧？」 |
+| 看券 / 核价 | 「今天有什么券？两个去酱板烧多少钱」 |
+| 下单 | 「帮我下单，去酱板烧×2，到店自取」 |
+| 付款 | 「下单后去麦当劳 App → 我的订单 → 付款」 |
+| 记录 | 「把这顿记入今日」 |
+
+### 完整订餐流程（对话示例）
+
+```
+你：我想吃麦当劳，帮我安排低卡午餐，然后下单
+教练：按窦月法午餐推荐「板烧经典餐」——2×去酱板烧，约 732 kcal / 46g 蛋白 / ¥48，≈1.83 板烧。
+      全天约 3–4 个板烧即可维持 300–500 缺口。确认这个套餐吗？
+你：确认
+教练：（领券 → 核价）当前暂无可领券；门店：麦当劳上海南京东路餐厅；清单：去酱板烧×2；实付 ¥48。
+      确认下单吗？
+你：确认
+教练：订单已创建（待支付）。请打开麦当劳 App →「我的订单」→ 付款即可（无需扫码）。
+你：付好了
+教练：（query-order 核对）已支付，取餐码 XXXX。本餐 ≈ 1.83 板烧。
 ```
 
-## 💬 使用示例
+> 关键安全点：**下单前一定先给你看门店 / 清单 / 金额，二次确认后才提交；下单不扣款，付款在麦当劳 App 完成。**
 
-```
-你：我想试窦月减肥法，今天午餐吃麦当劳，帮我安排
-教练：（调用 MCP 取菜单/营养/计价）按窦月法午餐 = 两个去酱板烧鸡腿堡，
-      约 732 大卡、46g 蛋白、¥48；已为你加好"去酱"特制项。
-      全天若控在 1300 左右，缺口约 300–500，属安全范围。
-你：帮我领券下单
-教练：（auto-bind-coupons → calculate-price → create-order）
-      当前暂无可领券，实付 ¥48；订单已创建（待支付）。
-      请到「麦当劳 App → 我的订单」完成付款即可。
-你：晚餐只吃两个馒头行吗？
-教练：⚠️ 健康提醒：晚餐纯白馒头缺乏蛋白与纤维，长期易反弹/脱发。
-      改良建议：换 1 个粗粮馒头 + 一份蔬菜/豆腐，或保留馒头但午餐已补足蛋白。
-```
+### 常见问题
+
+| 现象 | 原因 / 处理 |
+|---|---|
+| 连接器报 401 / Token 无效 | 没替换 `YOUR_MCP_TOKEN`，或 Token 前后有空格 |
+| `600039 今日下单数已达上限` | 账号级**每日下单次数**用尽，与餐品无关；明天再试，别换单硬刷 |
+| 领券返回 `499` / 无券 | 正常（当前无可领券），直接按原价核价 |
+| 手机打开支付链接只看到二维码 | 那是「扫码中间页」，同机扫不了自己屏幕；**去麦当劳 App「我的订单」直接付款** |
+| 查不到门店 / 菜单 | 确认 `mcd-mcp` 已启用、Token 有效、网络正常 |
 
 ## 🎮 免 Token 离线演示
 
@@ -119,7 +160,6 @@ douyue-mcd-coach/
 ├── install.py                 一键安装脚本
 ├── docs/
 │   ├── index.html             免 Token 离线演示页（单文件，零依赖）
-│   ├── INSTALL.md             安装与调用指南（WorkBuddy 用户订餐流程）
 │   ├── automation.md          可选自动化（每日中午/晚上提醒，默认关闭）
 │   └── images/                演示截图（README 引用）
 ├── references/
