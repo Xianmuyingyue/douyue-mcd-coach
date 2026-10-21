@@ -174,10 +174,26 @@ douyue-mcd-coach/
     └── daily_tracker.py       每日卡路里/板烧累计（持久化到 ~/.workbuddy/）
 ```
 
+## 🧭 项目入口
+
+| 文件 | 用途 |
+|---|---|
+| [`docs/index.html`](docs/index.html) | 免 Token 离线演示，打开就能看 |
+| [`SKILL.md`](SKILL.md) | 智能体主流程与健康护栏 |
+| [`scripts/live_plan.py`](scripts/live_plan.py) | 用真实 MCP 营养数据生成方案 |
+| [`scripts/mcp_client.py`](scripts/mcp_client.py) | 官方 MCP 客户端（领券 / 核价 / 下单） |
+| [`scripts/daily_tracker.py`](scripts/daily_tracker.py) | 每日板烧累计（本机持久化） |
+| [`references/health.md`](references/health.md) | 健康护栏（医生改良版与免责边界） |
+| [`MCP_INTEGRATION.md`](MCP_INTEGRATION.md) | MCP 接入、调用流程与支付策略 |
+
+## 💛 欢迎与支持
+
+![欢迎来坐坐，今天也要好好吃饭](docs/images/welcome.png)
+
+如果这个项目帮你"既能吃麦门、又不走极端"，欢迎点个 ⭐ Star 支持；也欢迎把问题、建议留在 Issue 区。
+
 ## 🏆 参赛信息
 
 - 赛事：2026 麦当劳程序员创意开发大赛（1024 程序员节）
 - 开发工具：腾讯 WorkBuddy（辅助开发）
 - 免 Token 即可体验：`docs/index.html`；真实能力与实测证据见 `MCP_INTEGRATION.md`
-
-如果这个项目帮你"既能吃麦门、又不走极端"，欢迎点个 ⭐ Star 支持！
