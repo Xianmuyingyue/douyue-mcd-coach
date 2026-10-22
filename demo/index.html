@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>窦月·麦门健康执行器 · 体验版</title>
+<meta name="description" content="把全网爆火的「窦月减肥法/麦当劳减肥法」变成可执行的三餐方案：用官方真实营养数据算热量，用「1 板烧」看懂份量，用医生改良版守住健康底线。">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --red:#DA291C;--red-d:#A81A10;--yellow:#FFC72C;--yellow-l:#FFE08A;
+  --ink:#1F1714;--ink2:#5B4F49;--ink3:#94867F;--line:#F1E3D8;
+  --bg:#FFF8F1;--card:#fff;--green:#12B76A;--green-bg:#F0FBF5;
+  --warn:#B45309;--warn-bg:#FFF7ED;--gray:#B8AAA2;
+  --r:16px;--sh:0 4px 18px rgba(120,60,30,.07);
+}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,select{font-family:inherit;font-size:15px}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px 40px}
+
+/* HERO */
+.hero{background:linear-gradient(165deg,#DA291C 0%,#B71C12 100%);color:#fff;position:relative;overflow:hidden;padding:26px 0 30px}
+.hero::before{content:"";position:absolute;width:320px;height:320px;border-radius:50%;
+  border:2px solid rgba(255,199,44,.26);right:-130px;top:-150px}
+.hero::after{content:"";position:absolute;width:200px;height:200px;border-radius:50%;
+  border:2px solid rgba(255,199,44,.16);right:-40px;top:-46px}
+.hero-in{max-width:640px;margin:0 auto;padding:0 16px;position:relative;z-index:2}
+.chip-top{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:4px 11px;
+  font-size:11.5px;font-weight:600;margin-bottom:14px}
+.chip-top i{width:6px;height:6px;border-radius:50%;background:var(--yellow);display:block}
+h1{margin:0 0 10px;font-size:26px;line-height:1.3;font-weight:800;letter-spacing:-.4px}
+h1 em{font-style:normal;color:var(--yellow)}
+.sub{margin:0;font-size:14px;line-height:1.75;color:rgba(255,255,255,.92);max-width:30em}
+.sub b{color:#fff;font-weight:700}
+.hero-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}
+.hero-tags span{font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:8px;
+  background:rgba(255,199,44,.18);color:var(--yellow-l);border:1px solid rgba(255,199,44,.24)}
+
+/* SECTION */
+.sec{margin-top:24px;scroll-margin-top:14px}
+.sec-h{display:flex;align-items:baseline;gap:9px;margin-bottom:11px}
+.sec-n{flex:0 0 auto;width:26px;height:26px;border-radius:9px;background:var(--red);color:#fff;
+  font-size:13px;font-weight:800;display:grid;place-items:center;transform:translateY(1px)}
+.sec-h h2{margin:0;font-size:17px;font-weight:800;letter-spacing:-.2px}
+.sec-h .hint{font-size:12px;color:var(--ink3);margin-left:auto;font-weight:500}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--sh)}
+
+/* PROFILE */
+.row{display:flex;gap:10px}
+.row>*{flex:1;min-width:0}
+.field label{display:block;font-size:11.5px;font-weight:700;color:var(--ink2);margin-bottom:5px}
+.field input,.field select{width:100%;height:42px;border:1.5px solid var(--line);border-radius:11px;
+  padding:0 11px;background:#fff;outline:0;color:var(--ink);transition:border-color .18s;
+  font-variant-numeric:tabular-nums}
+.field input:focus,.field select:focus{border-color:var(--red)}
+.bmr{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:13px}
+.bmr div{background:#FDF6EF;border:1px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center}
+.bmr b{display:block;font-size:19px;font-weight:800;color:var(--red);line-height:1.25;
+  font-variant-numeric:tabular-nums}
+.bmr span{font-size:10.5px;color:var(--ink3);font-weight:600}
+.bmr-tip{margin:10px 0 0;font-size:11.5px;color:var(--ink3);line-height:1.7}
+
+/* PLANS */
+.plans{display:grid;gap:9px;margin-top:12px}
+.plan{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:13px;
+  padding:12px 13px;transition:.16s;position:relative;display:block;width:100%}
+.plan:hover{border-color:var(--yellow-l)}
+.plan.on{border-color:var(--red);background:#FFF7F5;box-shadow:0 0 0 3px rgba(218,41,28,.08)}
+.plan .ph{display:flex;align-items:flex-start;gap:10px}
+.plan .dot{flex:0 0 auto;width:18px;height:18px;border-radius:50%;border:2px solid var(--line);
+  margin-top:2px;display:grid;place-items:center;font-size:11px;color:#fff;font-weight:800}
+.plan.on .dot{background:var(--red);border-color:var(--red)}
+.plan .tt{font-size:14px;font-weight:800;line-height:1.4}
+.plan .dd{font-size:11.5px;color:var(--ink2);line-height:1.6;margin-top:2px}
+.plan .badge{position:absolute;top:10px;right:11px;font-size:9.5px;font-weight:700;
+  padding:2px 6px;border-radius:5px;background:var(--yellow);color:var(--ink)}
+.plan .badge.danger{background:#FDE8E6;color:var(--red)}
+
+/* MEALS */
+.meals{margin-top:13px;border-top:1px dashed var(--line);padding-top:12px}
+.ml{display:flex;gap:9px;align-items:baseline;font-size:12.5px;color:var(--ink2);line-height:1.8}
+.ml>b{flex:0 0 26px;color:var(--red);font-weight:800;font-size:11.5px}
+.ml>span{flex:1;min-width:0}
+.ml>i{font-style:normal;color:var(--ink3);font-size:11px;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:13px}
+.metric{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 6px;text-align:center}
+.metric b{display:block;font-size:20px;font-weight:800;color:var(--ink);line-height:1.2;
+  font-variant-numeric:tabular-nums}
+.metric b i{font-size:11px;font-weight:700;font-style:normal;color:var(--ink3)}
+.metric span{font-size:10.5px;color:var(--ink3);font-weight:600}
+
+.verdict{margin-top:12px;border-radius:12px;padding:13px 14px;font-size:12.5px;line-height:1.75}
+.verdict .t{font-size:13px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.verdict.bad{background:#FFF4F2;border:1px solid #FBD9D4;color:#8A2117}
+.verdict.mid{background:var(--warn-bg);border:1px solid #FDE0B8;color:#7A4A05}
+.verdict.good{background:var(--green-bg);border:1px solid #CBEFDD;color:#0B6B3D}
+.verdict ul{margin:6px 0 0;padding-left:16px}
+.verdict li{margin:2px 0}
+
+.unit{margin-top:11px;background:linear-gradient(120deg,#FFF6E0,#FFEFC4);border:1px solid #FBE0A6;
+  border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px}
+.unit .big{font-size:26px;font-weight:800;color:#8A5B00;line-height:1;font-variant-numeric:tabular-nums}
+.unit .tx{font-size:11.5px;color:#7A5200;line-height:1.6}
+.unit .tx b{color:#5B3D00}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;height:48px;
+  border-radius:13px;font-size:15px;font-weight:800;transition:.16s}
+.btn.pri{background:var(--red);color:#fff;box-shadow:0 6px 18px rgba(218,41,28,.22)}
+.btn.pri:active{transform:scale(.985);background:var(--red-d)}
+.btn.ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink);height:42px;font-size:13.5px;border-radius:11px}
+.btn.ghost:active{background:#FFF6EE}
+
+/* CALENDAR */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:13px;padding:11px 8px;text-align:center}
+.stat b{display:block;font-size:20px;font-weight:800;color:var(--red);line-height:1.2;font-variant-numeric:tabular-nums}
+.stat span{font-size:10.5px;color:var(--ink3);font-weight:600}
+.cal{margin-top:13px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px}
+.cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+.cal-h b{font-size:13.5px;font-weight:800}
+.cal-h span{font-size:11px;color:var(--ink3)}
+.dow,.days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.dow div{text-align:center;font-size:10.5px;color:var(--ink3);font-weight:700;padding-bottom:4px}
+.days button{aspect-ratio:1;border-radius:9px;font-size:11.5px;font-weight:600;color:var(--ink2);
+  display:grid;place-items:center;background:#FCFAF8;border:1px solid transparent;position:relative}
+.days button.blank{background:none}
+.days button.today{border-color:var(--ink);font-weight:800;color:var(--ink)}
+.days button[data-s="ok"]{background:var(--red);color:#fff;font-weight:800}
+.days button[data-s="over"]{background:#FFF3D6;color:#8A5B00;font-weight:700}
+.days button[data-s="risk"]{background:#FDE8E6;color:var(--red);font-weight:800}
+.legend{display:flex;gap:12px;margin-top:11px;font-size:10.5px;color:var(--ink3);flex-wrap:wrap}
+.legend i{width:8px;height:8px;border-radius:3px;display:inline-block;margin-right:4px;vertical-align:1px}
+
+/* NOTES */
+.note{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px;margin-top:11px}
+.note h3{margin:0 0 8px;font-size:13.5px;font-weight:800;display:flex;align-items:center;gap:6px}
+.note p{margin:0 0 8px;font-size:12.5px;color:var(--ink2);line-height:1.8}
+.note p:last-child{margin-bottom:0}
+.note code{background:#FFF4E9;padding:1px 5px;border-radius:4px;font-size:11.5px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#8A4A12}
+.tbl{width:100%;border-collapse:collapse;margin-top:8px;font-size:11.5px}
+.tbl th,.tbl td{padding:6px 4px;border-bottom:1px solid #F5EEE8;text-align:right;
+  font-variant-numeric:tabular-nums;color:var(--ink2)}
+.tbl th:first-child,.tbl td:first-child{text-align:left;color:var(--ink);font-weight:600}
+.tbl th{color:var(--ink3);font-size:10.5px;font-weight:700}
+.risk{background:#FFF9E6;border:1px solid #FCE9A8;border-radius:12px;padding:12px 14px;margin-top:11px}
+.risk b{display:block;font-size:12.5px;font-weight:800;color:#8A5B00;margin-bottom:4px}
+.risk p{margin:0;font-size:12px;color:#7A5200;line-height:1.75}
+
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,18px);z-index:99;
+  background:rgba(31,23,20,.94);color:#fff;font-size:13px;font-weight:600;padding:10px 16px;
+  border-radius:11px;opacity:0;transition:.26s;pointer-events:none;max-width:86vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.foot{text-align:center;padding:26px 16px 6px;color:var(--ink3);font-size:11.5px;line-height:1.8}
+.foot b{color:var(--ink2)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <div class="chip-top"><i></i>WorkBuddy「1024 造物挑战」参赛作品 · 体验版</div>
+    <h1>窦月 · <em>麦门健康</em>执行器</h1>
+    <p class="sub">全网都在问「那个减肥法到底怎么吃」。<br>
+      我们把它做成能落地的一日三餐：<b>用官方真实营养数据算热量，用「1 板烧」看懂份量，用医生改良版守住底线。</b><br>
+      想瘦，但不必饿着，也不必算错。</p>
+    <div class="hero-tags"><span>官方真实热量</span><span>1 板烧单位</span><span>健康护栏</span><span>一周执行</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- ① 你的数据 -->
+  <section class="sec" id="s1">
+    <div class="sec-h"><div class="sec-n">1</div><h2>先算你自己的数</h2><div class="hint">才知道多少算「够」</div></div>
+    <div class="card">
+      <div class="row">
+        <div class="field"><label>性别</label>
+          <select id="sex"><option value="f">女</option><option value="m">男</option></select>
+        </div>
+        <div class="field"><label>年龄</label><input id="age" type="number" value="23" min="14" max="70" inputmode="numeric"></div>
+      </div>
+      <div class="row" style="margin-top:11px">
+        <div class="field"><label>身高 cm</label><input id="hgt" type="number" value="163" min="140" max="210" inputmode="numeric"></div>
+        <div class="field"><label>体重 kg</label><input id="wgt" type="number" value="58" min="35" max="150" inputmode="numeric"></div>
+      </div>
+      <div class="bmr">
+        <div><b id="bmrV">—</b><span>基础代谢 kcal</span></div>
+        <div><b id="tdeeV">—</b><span>日常消耗 kcal</span></div>
+        <div><b id="targetV">—</b><span>建议吃到 kcal</span></div>
+      </div>
+      <p class="bmr-tip">基础代谢用 Mifflin-St Jeor 公式估算；日常消耗按轻度活动（×1.375）；建议热量 = 日常消耗 − 400（对应每周约 0.4kg，安全区间 300–500）。</p>
+    </div>
+  </section>
+
+  <!-- ② 选吃法 -->
+  <section class="sec" id="s2">
+    <div class="sec-h"><div class="sec-n">2</div><h2>今天照哪种吃法</h2><div class="hint">先看它到底够不够</div></div>
+    <div class="card">
+      <div class="plans" id="plans"></div>
+      <div class="meals" id="meals"></div>
+    </div>
+  </section>
+
+  <!-- ③ 体检 -->
+  <section class="sec" id="s3">
+    <div class="sec-h"><div class="sec-n">3</div><h2>这份吃法，体检一下</h2><div class="hint">护栏会自动拦</div></div>
+    <div class="card">
+      <div class="metrics">
+        <div class="metric"><b id="mKcal">—</b><span>全天热量 kcal</span></div>
+        <div class="metric"><b id="mPro">—</b><span>蛋白质 g</span></div>
+        <div class="metric"><b id="mGap">—</b><span>热量缺口 kcal</span></div>
+      </div>
+      <div class="unit" id="unit">
+        <div class="big" id="unitBig">—</div>
+        <div class="tx"><b>1 板烧 = 391 kcal</b><br>今天这一整天，相当于吃了这么多个板烧。</div>
+      </div>
+      <div class="verdict mid" id="verdict">
+        <div class="t">—</div>
+        <div class="body">—</div>
+      </div>
+      <div style="margin-top:12px">
+        <button class="btn ghost" id="fixBtn">套用医生改良版看看 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ 一周 -->
+  <section class="sec" id="s4">
+    <div class="sec-h"><div class="sec-n">4</div><h2>一周执行日历</h2><div class="hint">点格子打卡</div></div>
+    <div class="stats">
+      <div class="stat"><b id="st1">0</b><span>达标天数</span></div>
+      <div class="stat"><b id="st2">0</b><span>累计缺口 kcal</span></div>
+      <div class="stat"><b id="st3">0</b><span>触发护栏</span></div>
+    </div>
+    <div class="cal">
+      <div class="cal-h"><b id="calTitle">—</b><span>点格子切换状态</span></div>
+      <div class="dow"><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div><div>日</div></div>
+      <div class="days" id="cal"></div>
+      <div class="legend">
+        <span><i style="background:var(--red)"></i>达标</span>
+        <span><i style="background:#FFF3D6"></i>吃多了</span>
+        <span><i style="background:#FDE8E6"></i>触发护栏</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑤ 数据 -->
+  <section class="sec" id="s5">
+    <div class="sec-h"><div class="sec-n">i</div><h2>这些数字不是编的</h2></div>
+    <div class="note">
+      <h3>📊 热量来自麦当劳官方营养接口</h3>
+      <p>下面是 2026-10-22 09:33 通过官方 MCP <code>list-nutrition-foods</code> 拉到的原始数据（节选），页面所有计算都用这些值：</p>
+      <table class="tbl">
+        <thead><tr><th>餐品</th><th>热量</th><th>蛋白</th><th>脂肪</th><th>碳水</th></tr></thead>
+        <tbody id="tblBody"></tbody>
+      </table>
+      <p style="margin-top:9px">「去酱」按每个减 25 kcal 估算（酱料部分），其余为官方实测值；非麦当劳食物（水煮蛋、白馒头、杂粮饭等）采用通用食物成分表，已在明细里标注。</p>
+    </div>
+    <div class="note">
+      <h3>🩺 健康护栏是什么</h3>
+      <p>照抄明星吃法最容易踩两个坑：<b>全天吃不到基础代谢</b>、<b>蛋白质严重不足</b>。所以只要触发下面任一条，就会强制给出医生改良版（保留板烧、加蔬菜与优质蛋白、缺口收在 300–500）：</p>
+      <ul style="margin:6px 0 0;padding-left:17px;font-size:12.5px;color:var(--ink2);line-height:1.9">
+        <li>全天热量 &lt; 基础代谢</li>
+        <li>蛋白质 &lt; 体重(kg)×1.2 g</li>
+        <li>全天缺口 &gt; 700 kcal</li>
+      </ul>
+    </div>
+    <div class="risk">
+      <b>这不是医疗建议</b>
+      <p>本作品是「可执行的吃法参考」，不构成医疗或营养处方。有基础疾病、孕期、未成年或正在服药，请先问医生或注册营养师。明星吃法适合参考，不适合照抄。</p>
+    </div>
+  </section>
+
+  <div class="foot">
+    <b>窦月·麦门健康执行器</b> · WorkBuddy「1024 造物挑战」<br>
+    营养数据 © 麦当劳中国官方 MCP · 本项目为个人参赛作品，非麦当劳官方产品
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== 官方营养数据（list-nutrition-foods 2026-10-22 09:33） ===== */
+const NUT = [
+  {n:"板烧鸡腿堡", k:391, p:23, f:17, c:35},
+  {n:"原味板烧鸡腿麦满分", k:246, p:15, f:9, c:25},
+  {n:"双层原味板烧鸡腿麦满分", k:355, p:23, f:17, c:27},
+  {n:"双层吉士汉堡", k:429, p:27, f:22, c:31},
+  {n:"吉士汉堡包", k:294, p:16, f:12, c:30},
+  {n:"麦香鱼", k:325, p:16, f:13, c:35},
+  {n:"麦辣鸡腿汉堡", k:485, p:24, f:24, c:42},
+  {n:"苹果片", k:32, p:0, f:0, c:7},
+  {n:"纯牛奶（盒装）", k:129, p:7, f:7, c:10},
+  {n:"优品豆浆大杯", k:202, p:8, f:4, c:33},
+  {n:"脆薯饼", k:146, p:1, f:9, c:14},
+  {n:"小杯玉米杯", k:53, p:2, f:1, c:7},
+  {n:"大杯玉米杯", k:87, p:4, f:1, c:12},
+  {n:"无糖可口可乐中杯", k:0, p:0, f:0, c:1},
+  {n:"大杯鲜萃咖啡", k:13, p:1, f:0, c:0},
+  {n:"麦乐鸡 5 块", k:213, p:12, f:12, c:13},
+  {n:"脆香油条", k:202, p:5, f:12, c:19},
+  {n:"皮蛋鸡肉粥", k:133, p:6, f:3, c:20}
+];
+const EXTRA = [  /* 非麦当劳食材：通用食物成分表，页面会标注 */
+  {n:"水煮蛋 1 个", k:78, p:6, f:5, c:1, ext:1},
+  {n:"白馒头 100g", k:223, p:7, f:1, c:47, ext:1},
+  {n:"杂粮饭 150g", k:174, p:5, f:1, c:37, ext:1},
+  {n:"清炒时蔬 150g", k:90, p:3, f:5, c:8, ext:1},
+  {n:"鸡胸肉 100g", k:133, p:24, f:3, c:0, ext:1}
+];
+const ALL = NUT.concat(EXTRA);
+const K = 391;  /* 1 板烧 */
+const find = n => ALL.find(x => x.n === n);
+
+/* ===== 吃法 ===== */
+const PLANS = [
+  { id:"douyue", t:"照抄窦月法", d:"早黑咖+蛋、午两个去酱板烧、晚白馒头", badge:"明星同款",
+    meals:[["早","大杯鲜萃咖啡 + 水煮蛋 1 个",["大杯鲜萃咖啡","水煮蛋 1 个"]],
+           ["午","板烧鸡腿堡 ×2（去酱）",["板烧鸡腿堡","板烧鸡腿堡"]],
+           ["晚","白馒头 2 个",["白馒头 100g","白馒头 100g"]]],
+    desauce:2 },
+  { id:"bansha", t:"板烧经典餐（改良）", d:"保留两个板烧，早晚补齐蛋白和蔬菜", badge:"改良",
+    meals:[["早","优品豆浆大杯 + 脆薯饼",["优品豆浆大杯","脆薯饼"]],
+           ["午","板烧鸡腿堡 ×2（去酱）+ 小玉米杯",["板烧鸡腿堡","板烧鸡腿堡","小杯玉米杯"]],
+           ["晚","鸡胸肉 + 杂粮饭 + 清炒时蔬",["鸡胸肉 100g","杂粮饭 150g","清炒时蔬 150g"]]],
+    desauce:2 },
+  { id:"cheese", t:"双层吉士餐", d:"想吃芝士就选它，午餐蛋白够、热量可控", badge:"",
+    meals:[["早","纯牛奶 + 脆薯饼",["纯牛奶（盒装）","脆薯饼"]],
+           ["午","双层吉士汉堡 + 苹果片",["双层吉士汉堡","苹果片"]],
+           ["晚","鸡胸肉 + 杂粮饭 + 清炒时蔬",["鸡胸肉 100g","杂粮饭 150g","清炒时蔬 150g"]]],
+    desauce:0 },
+  { id:"fish", t:"麦香鱼轻食", d:"最清淡的一档，适合晚上有聚餐的日子", badge:"低卡",
+    meals:[["早","优品豆浆大杯",["优品豆浆大杯"]],
+           ["午","麦香鱼 + 苹果片",["麦香鱼","苹果片"]],
+           ["晚","鸡胸肉 + 杂粮饭 + 清炒时蔬",["鸡胸肉 100g","杂粮饭 150g","清炒时蔬 150g"]]],
+    desauce:0 },
+  { id:"doctor", t:"医生改良版", d:"护栏触发后的推荐：板烧减半、加蔬菜粗粮、缺口收进安全区", badge:"护栏推荐",
+    meals:[["早","优品豆浆大杯 + 脆薯饼 + 水煮蛋",["优品豆浆大杯","脆薯饼","水煮蛋 1 个"]],
+           ["午","板烧鸡腿堡（去酱）+ 大玉米杯 + 纯牛奶",["板烧鸡腿堡","大杯玉米杯","纯牛奶（盒装）"]],
+           ["晚","鸡胸肉 + 杂粮饭 + 清炒时蔬 + 苹果片",["鸡胸肉 100g","杂粮饭 150g","清炒时蔬 150g","苹果片"]]],
+    desauce:1 }
+];
+
+/* ===== 状态 ===== */
+const KEY = "douyue_1024_demo_v1";
+const DEF = { sex:"f", age:23, hgt:163, wgt:58, plan:"douyue", log:{} };
+let S = DEF;
+try { const raw = localStorage.getItem(KEY); if (raw) S = Object.assign({}, DEF, JSON.parse(raw)); } catch (e) {}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+const $ = s => document.querySelector(s);
+const el = (t, c, h) => { const n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; };
+function toast(m){ const t = $("#toast"); t.textContent = m; t.classList.add("on"); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("on"), 2200); }
+function fmtDate(d){ const p = n => String(n).padStart(2, "0"); return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate()); }
+
+/* ===== 代谢 ===== */
+function bmr(){
+  const w = +S.wgt || 58, h = +S.hgt || 163, a = +S.age || 23;
+  return Math.round(10 * w + 6.25 * h - 5 * a + (S.sex === "m" ? 5 : -161));
+}
+function tdee(){ return Math.round(bmr() * 1.375); }
+function target(){ return Math.max(1000, tdee() - 400); }
+
+function renderProfile(){
+  $("#bmrV").textContent = bmr();
+  $("#tdeeV").textContent = tdee();
+  $("#targetV").textContent = target();
+}
+
+/* ===== 计算一份吃法 ===== */
+function calc(plan){
+  let k = 0, p = 0, f = 0, c = 0, desauce = plan.desauce || 0;
+  plan.meals.forEach(m => m[2].forEach(n => {
+    const it = find(n); if (!it) return;
+    k += it.k; p += it.p; f += it.f; c += it.c;
+  }));
+  k -= desauce * 25;  /* 去酱 */
+  f -= desauce * 3;
+  return { k: Math.round(k), p: Math.round(p), f: Math.round(f), c: Math.round(c) };
+}
+
+/* ===== 护栏判定 ===== */
+function check(v){
+  const issues = [], warns = [];
+  if (v.k < bmr()) issues.push("全天 " + v.k + " kcal，低于你的基础代谢 " + bmr() + " kcal——身体会先降消耗、掉的是肌肉和水分");
+  else if (v.k < bmr() * 1.05) warns.push("只比基础代谢高一点点，长期容易乏力、注意力下降");
+  const needP = Math.round((+S.wgt || 58) * 1.2);
+  if (v.p < needP) issues.push("蛋白质 " + v.p + "g，低于建议的 " + needP + "g（体重×1.2）——掉秤快，但掉的多是肌肉");
+  const gap = tdee() - v.k;
+  if (gap > 700) issues.push("缺口 " + gap + " kcal，超过 700 的安全上限——容易反弹，也容易暴食");
+  else if (gap < 0) warns.push("已经吃超了 " + Math.abs(gap) + " kcal，这天不算减脂");
+  return { issues, warns, gap };
+}
+
+function renderPlans(){
+  const box = $("#plans"); box.innerHTML = "";
+  PLANS.forEach(p => {
+    const b = el("button", "plan" + (S.plan === p.id ? " on" : ""));
+    b.type = "button";
+    if (p.badge) b.appendChild(el("span", "badge" + (p.id === "douyue" ? " danger" : ""), p.badge));
+    const ph = el("div", "ph");
+    ph.appendChild(el("div", "dot", S.plan === p.id ? "✓" : ""));
+    const tx = el("div", "");
+    tx.appendChild(el("div", "tt", p.t));
+    tx.appendChild(el("div", "dd", p.d));
+    ph.appendChild(tx);
+    b.appendChild(ph);
+    b.onclick = () => { S.plan = p.id; save(); renderAll(); };
+    box.appendChild(b);
+  });
+}
+
+function currentPlan(){ return PLANS.find(p => p.id === S.plan) || PLANS[0]; }
+
+function renderMeals(){
+  const box = $("#meals"); box.innerHTML = "";
+  const p = currentPlan();
+  p.meals.forEach(m => {
+    const d = el("div", "ml");
+    let k = 0;
+    m[2].forEach(n => { const it = find(n); if (it) k += it.k; });
+    k -= (p.desauce ? 25 * m[2].filter(n => n.indexOf("板烧") >= 0).length : 0);
+    d.innerHTML = "<b>" + m[0] + "</b><span>" + m[1] + "</span><i>" + Math.round(k) + " kcal</i>";
+    box.appendChild(d);
+  });
+}
+
+function renderMetrics(){
+  const p = currentPlan();
+  const v = calc(p);
+  const ck = check(v);
+  $("#mKcal").textContent = v.k;
+  $("#mPro").textContent = v.p;
+  $("#mGap").textContent = (ck.gap >= 0 ? "−" : "+") + Math.abs(ck.gap);
+  $("#unitBig").textContent = "≈ " + (v.k / K).toFixed(1);
+
+  const vd = $("#verdict");
+  vd.className = "verdict " + (ck.issues.length ? "bad" : ck.warns.length ? "mid" : "good");
+  const t = el("div", "t");
+  const body = el("div", "body");
+  if (ck.issues.length) {
+    t.textContent = "⚠️ 触发健康护栏，不建议照这个吃";
+    body.innerHTML = "<ul>" + ck.issues.map(x => "<li>" + x + "</li>").join("") + "</ul>";
+  } else if (ck.warns.length) {
+    t.textContent = "🟡 勉强可以，但还能更好";
+    body.innerHTML = "<ul>" + ck.warns.map(x => "<li>" + x + "</li>").join("") + "</ul>";
+  } else {
+    t.textContent = "✅ 可以执行";
+    body.innerHTML = "热量 " + v.k + " kcal、蛋白 " + v.p + "g、缺口 " + ck.gap + " kcal，落在安全区间（缺口 300–500、蛋白 ≥" + Math.round((+S.wgt || 58) * 1.2) + "g）。";
+  }
+  vd.innerHTML = ""; vd.appendChild(t); vd.appendChild(body);
+}
+
+/* ===== 日历 ===== */
+function renderCal(){
+  const now = new Date(), y = now.getFullYear(), mo = now.getMonth();
+  $("#calTitle").textContent = y + " 年 " + (mo + 1) + " 月";
+  const lead = (new Date(y, mo, 1).getDay() + 6) % 7;
+  const dim = new Date(y, mo + 1, 0).getDate();
+  const box = $("#cal"); box.innerHTML = "";
+  for (let i = 0; i < lead; i++) box.appendChild(el("button", "blank"));
+  let ok = 0, gapSum = 0, risk = 0;
+  for (let d = 1; d <= dim; d++) {
+    const ds = y + "-" + String(mo + 1).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+    const st = S.log[ds];
+    const b = el("button", ds === fmtDate(now) ? "today" : "", String(d));
+    if (st) b.dataset.s = st;
+    if (st === "ok") { ok++; gapSum += 400; }
+    if (st === "over") gapSum += 100;
+    if (st === "risk") risk++;
+    b.onclick = () => {
+      const order = ["", "ok", "over", "risk"];
+      const next = order[(order.indexOf(st || "") + 1) % order.length];
+      if (next) S.log[ds] = next; else delete S.log[ds];
+      save(); renderCal();
+      toast(next ? ({ ok: "记下了：这天达标", over: "记下了：这天吃多了", risk: "记下了：这天触发了护栏" }[next]) : "已清除这天记录");
+    };
+    box.appendChild(b);
+  }
+  $("#st1").textContent = ok;
+  $("#st2").textContent = gapSum;
+  $("#st3").textContent = risk;
+}
+
+function renderTable(){
+  const tb = $("#tblBody"); tb.innerHTML = "";
+  ["板烧鸡腿堡", "双层吉士汉堡", "麦香鱼", "原味板烧鸡腿麦满分", "苹果片", "优品豆浆大杯", "脆薯饼"].forEach(n => {
+    const it = find(n);
+    if (!it) return;
+    const tr = el("tr", "");
+    tr.innerHTML = "<td>" + it.n + "</td><td>" + it.k + "</td><td>" + it.p + "g</td><td>" + it.f + "g</td><td>" + it.c + "g</td>";
+    tb.appendChild(tr);
+  });
+}
+
+function renderAll(){ renderProfile(); renderPlans(); renderMeals(); renderMetrics(); renderCal(); }
+
+/* ===== 事件 ===== */
+["sex", "age", "hgt", "wgt"].forEach(id => {
+  const e = $("#" + id);
+  if (!e) return;
+  e.value = S[id];
+  e.addEventListener("input", () => { S[id] = (id === "sex" ? e.value : +e.value || DEF[id]); save(); renderAll(); });
+  e.addEventListener("change", () => { S[id] = (id === "sex" ? e.value : +e.value || DEF[id]); save(); renderAll(); });
+});
+$("#fixBtn").onclick = () => {
+  S.plan = "doctor"; save(); renderAll();
+  document.getElementById("s3").scrollIntoView({ behavior: "smooth", block: "center" });
+  toast("已套用医生改良版，看看数字变化");
+};
+
+renderTable();
+renderAll();
+</script>
+</body>
+</html>

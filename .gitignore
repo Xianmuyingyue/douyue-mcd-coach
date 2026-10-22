@@ -13,3 +13,6 @@ Thumbs.db
 
 # 备份（install.py 生成的 .bak）
 *.bak
+
+# WorkBuddy 工作目录
+.workbuddy/

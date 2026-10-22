@@ -2,6 +2,16 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/Xianmuyingyue/douyue-mcd-coach?style=social)](https://github.com/Xianmuyingyue/douyue-mcd-coach)　**⭐ 觉得有意思就点个 Star 支持参赛（本次比赛按 GitHub Star 排名）**　[🎮 免 Token 演示](docs/index.html)
 
+## 🎬 在线体验（不用装任何东西）
+
+### **[▶ 点这里直接试 →](https://mcd-breakfast-buddy.app.workbuddy.host/douyue.html?sharecode=QYRZPORCHR)**
+
+填四个数（性别/年龄/身高/体重）→ 算出你的基础代谢 → 选一种吃法 → **当场判定够不够**。
+
+把「照抄窦月法」输进去，页面会直接亮红牌：全天 1269 kcal，低于 1323 kcal 的基础代谢；蛋白 67g，低于该吃的 70g。点一下「套用医生改良版」，数字变成 1437 kcal / 蛋白 81g / 缺口 382 kcal，绿牌通过。
+
+热量全部来自 **2026-10-22 09:33** 通过官方 MCP `list-nutrition-foods` 拉取的真实数据（板烧鸡腿堡 **391 kcal / 蛋白 23g**），可逐项核对。
+
 > 蒋诗萌综艺带火的「窦月减肥法 / 麦当劳减肥法」冲上热搜后，全网都在问：到底怎么吃？
 > 本项目把它做成一个**能真正执行**的麦当劳 Skill：一键生成低卡套餐、用「1 板烧」看懂热量、用官方真实菜单核价、直接下单并在**麦当劳 App 里安全付款**——同时用医生改良版守住健康底线。
 
@@ -146,6 +156,8 @@
 
 不想配 Token？直接打开 [`docs/index.html`](docs/index.html) 即可——**无需 Token、无需联网、零依赖**（双击或拖进浏览器），两屏：① 麦当劳场景（选低卡套餐 + 下方内嵌领券 / 核价 / 下单）、② 非麦场景 1 板烧换算。
 
+> 还有一个更"较真"的版本：[`demo/index.html`](demo/index.html)——填四个数算你的基础代谢，把「照抄窦月法」输进去当场判红绿牌，并能一键换医生改良版看数字变化。
+
 ## 📁 目录结构
 
 ```
@@ -162,6 +174,9 @@ douyue-mcd-coach/
 │   ├── index.html             免 Token 离线演示页（单文件，零依赖）
 │   ├── automation.md          可选自动化（每日中午/晚上提醒，默认关闭）
 │   └── images/                演示截图（README 引用）
+├── demo/
+│   ├── index.html            1024 体验版（算基础代谢 + 红绿牌判定，单文件）
+│   └── test.js               Puppeteer 交互自测脚本
 ├── references/
 │   ├── douyue_method.md       窦月减肥法结构化定义与热量估算
 │   ├── health.md              健康护栏（医生改良版与免责边界）
@@ -179,6 +194,7 @@ douyue-mcd-coach/
 | 文件 | 用途 |
 |---|---|
 | [`docs/index.html`](docs/index.html) | 免 Token 离线演示，打开就能看 |
+| [`demo/index.html`](demo/index.html) | 1024 体验版：算你的基础代谢，当场判红绿牌 |
 | [`SKILL.md`](SKILL.md) | 智能体主流程与健康护栏 |
 | [`scripts/live_plan.py`](scripts/live_plan.py) | 用真实 MCP 营养数据生成方案 |
 | [`scripts/mcp_client.py`](scripts/mcp_client.py) | 官方 MCP 客户端（领券 / 核价 / 下单） |
@@ -197,3 +213,13 @@ douyue-mcd-coach/
 - 赛事：2026 麦当劳程序员创意开发大赛（1024 程序员节）
 - 开发工具：腾讯 WorkBuddy（辅助开发）
 - 免 Token 即可体验：`docs/index.html`；真实能力与实测证据见 `MCP_INTEGRATION.md`
+- **同时参加 WorkBuddy「1024 造物挑战」**，在线体验：[douyue.html](https://mcd-breakfast-buddy.app.workbuddy.host/douyue.html?sharecode=QYRZPORCHR)
+
+## 👯 同系列作品
+
+一个管「吃什么更健康」，一个管「几点能吃到」：
+
+| 作品 | 解决什么 | 在线体验 |
+|---|---|---|
+| **窦月·麦门健康执行器**（本项目） | 网红吃法到底够不够、会不会伤身体 | [douyue.html](https://mcd-breakfast-buddy.app.workbuddy.host/douyue.html?sharecode=QYRZPORCHR) |
+| [麦当劳早餐下定搭子](https://github.com/Xianmuyingyue/mcd-breakfast-alarm) | 早八没时间点单、到店要排队 | [breakfast.html](https://mcd-breakfast-buddy.app.workbuddy.host/breakfast.html?sharecode=QYRZPORCHR) |
